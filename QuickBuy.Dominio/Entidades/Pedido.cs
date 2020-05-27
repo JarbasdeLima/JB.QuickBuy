@@ -1,11 +1,12 @@
 ﻿using QuickBuy.Dominio.ObjetoDeValor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace QuickBuy.Dominio.Contratos
 {
-    public class Pedido
+    public class Pedido : Entidade
     {
         public int Id { get; set; }
         public DateTime DataPedido { get; set; }
@@ -22,5 +23,15 @@ namespace QuickBuy.Dominio.Contratos
 
         public ICollection <ItemPedido> ItensPedidos { get; set; }
 
+        public override void Validate()
+        {
+            LimparMenssagemValidacao();
+            if (!ItensPedidos.Any())
+               AdicionarCritica("Críticas - Pedido sem item selecionado");
+            
+            if(string.IsNullOrEmpty(Cep))
+            AdicionarCritica("Críticas - Cep inválido");
+
+        }
     }
 }
